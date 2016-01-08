@@ -1,3 +1,7 @@
+#  ----------------------------------------------------------------------------
+#  Creator
+#  ----------------------------------------------------------------------------
+
 class Animal
     def initialize(name)
     @name = name
@@ -44,39 +48,64 @@ class Frog < Animal
   end
 end
 
+class Algae
+  def initialize(name)
+    @name = name
+  end
+
+  def grow
+    p "The Algae #{@name} grows"
+  end
+end
+
+class Waterlily
+  def initialize(name)
+    @name = name
+  end
+
+  def grow
+    p "The Waterlily #{@name} grows"
+  end
+end
+
+#  ----------------------------------------------------------------------------
+#  Product
+#  ----------------------------------------------------------------------------
+
+
 class Pond
-  def initialize(number_animals)
+  def initialize(animal_class, number_animals, plant_class, number_plants)
+    @animal_class = animal_class
+    @plant_class = plant_class
+
     @animals = []
     number_animals.times do |i|
-      animal = new_animal(i)
+      animal = new_organism(:animal, "#{@animal_class.to_s}#{i}")
       @animals << animal
+    end
+
+    @plants = []
+    number_plants.times do |i|
+      plant = new_organism(:plant, "plant#{i}")
+      @plants << plant
     end
   end
 
   def simulate_one_day
+    @plants.each {|plant| plant.grow}
     @animals.each {|animal| animal.speak}
     @animals.each {|animal| animal.eat}
     @animals.each {|animal| animal.sleep}
   end
-end
 
-class FrogPond < Pond
-  def new_animal(i)
-    Frog.new "Frog#{i}"
+  def new_organism(type, name)
+    if type == :animal
+      @animal_class.new name
+    elsif type == :plant
+      @plant_class.new name
+    end
   end
 end
 
-class DuckPond < Pond
-  def new_animal(i)
-    Duck.new "Duck#{i}"
-  end
-end
-
-
-frogPond = FrogPond.new 3
-duckPond = DuckPond.new 3
-
-frogPond.simulate_one_day
-duckPond.simulate_one_day
-
-
+pond = Pond.new(Duck, 2, Algae, 1)
+pond.simulate_one_day()
