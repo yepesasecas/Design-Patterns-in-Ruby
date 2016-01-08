@@ -123,31 +123,27 @@ end
 #  ----------------------------------------------------------------------------
 #  Concrete Factory
 #  ----------------------------------------------------------------------------
-class PondOrganismFactory
+class OrganismFactory
+  def initialize(plant_class, animal_class)
+    @plant_class = plant_class
+    @animal_class = animal_class
+  end
   def new_plant(name)
-    Algae.new(name)
+    @plant_class.new(name)
   end
 
   def new_animal(name)
-    Frog.new(name)
-  end
-end
-
-class JungleOrganismFactory
-  def new_plant(name)
-    Tree.new(name)
-  end
-
-  def new_animal(name)
-    Tiger.new(name)
+    @animal_class.new(name)
   end
 end
 
 #  ----------------------------------------------------------------------------
 #  Init
 #  ----------------------------------------------------------------------------
-pond = Habitat.new(2, 1, PondOrganismFactory.new)
+pondOrganismFactory = OrganismFactory.new(Algae, Duck)
+pond = Habitat.new(2, 1, pondOrganismFactory)
 pond.simulate_one_day()
 
-jungle = Habitat.new(2, 1, JungleOrganismFactory.new)
+jungleOrganismFactory = OrganismFactory.new(Tree, Tiger)
+jungle = Habitat.new(2, 1, jungleOrganismFactory)
 jungle.simulate_one_day()
