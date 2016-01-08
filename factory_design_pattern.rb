@@ -34,7 +34,7 @@ class Duck < Animal
   end
 end
 
-class Frog < Animal
+class Tiger < Animal
   def eat
     p "Frog #{@name} eats."
   end
@@ -45,6 +45,30 @@ class Frog < Animal
 
   def sleep
     p "Frog #{@name} sleeps."
+  end
+end
+
+class Tiger < Animal
+  def eat
+    p "Tiger #{@name} eats."
+  end
+
+  def speak
+    p "Tiger #{@name} speaks."
+  end
+
+  def sleep
+    p "Tiger #{@name} sleeps."
+  end
+end
+
+class Tree
+  def initialize(name)
+    @name = name
+  end
+
+  def grow
+    p "The Tree #{@name} grows"
   end
 end
 
@@ -73,7 +97,7 @@ end
 #  ----------------------------------------------------------------------------
 
 
-class Pond
+class Habitat
   def initialize(animal_class, number_animals, plant_class, number_plants)
     @animal_class = animal_class
     @plant_class = plant_class
@@ -107,5 +131,8 @@ class Pond
   end
 end
 
-pond = Pond.new(Duck, 2, Algae, 1)
+pond = Habitat.new(Duck, 2, Algae, 1)
 pond.simulate_one_day()
+
+jungle = Habitat.new(Tiger, 2, Tree, 1)
+jungle.simulate_one_day()
