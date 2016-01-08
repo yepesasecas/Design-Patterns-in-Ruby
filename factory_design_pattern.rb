@@ -1,5 +1,5 @@
 #  ----------------------------------------------------------------------------
-#  Creator
+#  Products
 #  ----------------------------------------------------------------------------
 
 class Animal
@@ -34,7 +34,7 @@ class Duck < Animal
   end
 end
 
-class Tiger < Animal
+class Frog < Animal
   def eat
     p "Frog #{@name} eats."
   end
@@ -93,24 +93,21 @@ class Waterlily
 end
 
 #  ----------------------------------------------------------------------------
-#  Product
+#  Abstract Factort
 #  ----------------------------------------------------------------------------
 
 
 class Habitat
-  def initialize(animal_class, number_animals, plant_class, number_plants)
-    @animal_class = animal_class
-    @plant_class = plant_class
-
+  def initialize(number_animals, number_plants, organism_factory)
     @animals = []
     number_animals.times do |i|
-      animal = new_organism(:animal, "#{@animal_class.to_s}#{i}")
+      animal = organism_factory.new_animal("animal#{i}")
       @animals << animal
     end
 
     @plants = []
     number_plants.times do |i|
-      plant = new_organism(:plant, "plant#{i}")
+      plant = organism_factory.new_plant("plant#{i}")
       @plants << plant
     end
   end
@@ -121,18 +118,36 @@ class Habitat
     @animals.each {|animal| animal.eat}
     @animals.each {|animal| animal.sleep}
   end
+end
 
-  def new_organism(type, name)
-    if type == :animal
-      @animal_class.new name
-    elsif type == :plant
-      @plant_class.new name
-    end
+#  ----------------------------------------------------------------------------
+#  Concrete Factory
+#  ----------------------------------------------------------------------------
+class PondOrganismFactory
+  def new_plant(name)
+    Algae.new(name)
+  end
+
+  def new_animal(name)
+    Frog.new(name)
   end
 end
 
-pond = Habitat.new(Duck, 2, Algae, 1)
+class JungleOrganismFactory
+  def new_plant(name)
+    Tree.new(name)
+  end
+
+  def new_animal(name)
+    Tiger.new(name)
+  end
+end
+
+#  ----------------------------------------------------------------------------
+#  Init
+#  ----------------------------------------------------------------------------
+pond = Habitat.new(2, 1, PondOrganismFactory.new)
 pond.simulate_one_day()
 
-jungle = Habitat.new(Tiger, 2, Tree, 1)
+jungle = Habitat.new(2, 1, JungleOrganismFactory.new)
 jungle.simulate_one_day()
