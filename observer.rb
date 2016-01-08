@@ -7,11 +7,24 @@ class Employee
     @title = title
     @salary = salary
     @payroll = payroll
+    @observers = []
   end
 
   def salary=(new_salary)
     @salary = new_salary
-    @payroll.update(self)
+    notify_observers()
+  end
+
+  def notify_observers
+    @observers.each {|observer| observer.update(self)}
+  end
+
+  def add_observer(observer)
+    @observers << observer
+  end
+
+  def delete_observer(observer)
+    @observers.delete(observer)
   end
 end
 
@@ -22,5 +35,7 @@ class Payroll
   end
 end
 
+payroll = Payroll.new
 employee = Employee.new("Jaime", "Seductor", 1000, Payroll.new)
+employee.add_observer(payroll)
 employee.salary=(1500)
